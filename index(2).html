@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07110d">
+<title>Mirramor Invoice</title>
+<style>
+:root{
+  --bg:#eef1f4;
+  --paper:#ffffff;
+  --paper-soft:#f7f8fa;
+  --ink:#17212b;
+  --muted:#66727e;
+  --line:#d9dee4;
+  --line-strong:#c7ced6;
+  --navy:#20364d;
+  --accent:#2f7d68;
+  --accent-soft:#e8f3ef;
+  --gold:#b88a3b;
+  --danger:#b84c4c;
+  --shadow:0 8px 24px rgba(28,42,56,.10);
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  background:linear-gradient(180deg,#f3f5f7 0%,#e9edf1 100%);
+  color:var(--ink);
+  font-family:Arial,Tahoma,sans-serif;
+}
+
+body{
+  display:flex;
+  justify-content:center;
+}
+
+button,input,select{font:inherit}
+
+.app{
+  width:min(100%,430px);
+  height:100dvh;
+  height:100svh;
+  padding:5px;
+  display:grid;
+  grid-template-rows:47px 63px 31px minmax(0,1fr) 78px 35px;
+  gap:4px;
+  overflow:hidden;
+}
+
+.box{
+  border:1px solid var(--line);
+  background:var(--paper);
+  border-radius:11px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:5px 7px;
+  background:linear-gradient(135deg,#ffffff,#f7f9fb);
+  border-color:var(--line-strong);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.logo{
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  background:var(--navy);
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  box-shadow:0 5px 12px rgba(32,54,77,.18);
+}
+
+.brand h1{
+  margin:0;
+  font-size:16px;
+  letter-spacing:1px;
+  color:var(--navy);
+}
+
+.brand p{
+  margin:1px 0 0;
+  color:var(--muted);
+  font-size:8px;
+}
+
+.tools{
+  display:flex;
+  gap:4px;
+}
+
+.tool{
+  width:31px;
+  height:31px;
+  padding:0;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  color:var(--navy);
+  cursor:pointer;
+}
+
+.tool:active{background:var(--paper-soft)}
+
+.customer{
+  padding:4px;
+  display:grid;
+  grid-template-columns:1.35fr .8fr;
+  grid-template-rows:1fr 1fr;
+  gap:4px;
+}
+
+.field{
+  min-width:0;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  gap:3px;
+}
+
+.field label{
+  font-size:8px;
+  color:var(--muted);
+  font-weight:700;
+  white-space:nowrap;
+}
+
+input,select{
+  width:100%;
+  min-width:0;
+  height:24px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fff;
+  color:var(--ink);
+  outline:none;
+  padding:2px 5px;
+  font-size:9px;
+}
+
+input:focus,select:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(47,125,104,.12);
+  background:#fff;
+}
+
+input::selection{
+  background:rgba(47,125,104,.24);
+  color:var(--ink);
+}
+
+input[type=number]{
+  direction:ltr;
+  text-align:center;
+  font-weight:700;
+}
+
+.discount{
+  display:grid;
+  grid-template-columns:auto 52px 63px 1fr;
+  align-items:center;
+  gap:4px;
+  padding:3px 5px;
+  background:var(--paper-soft);
+  border-color:var(--line-strong);
+}
+
+.discount span{
+  font-size:8px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+.discount input{height:23px}
+
+.apply{
+  height:23px;
+  border:0;
+  border-radius:6px;
+  background:var(--accent);
+  color:#fff;
+  font-size:8px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.sheet{
+  min-height:0;
+  background:var(--paper);
+  border-color:var(--line-strong);
+}
+
+table{
+  width:100%;
+  height:100%;
+  table-layout:fixed;
+  border-collapse:collapse;
+}
+
+th,td{
+  border-left:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:2px;
+  text-align:center;
+  overflow:hidden;
+}
+
+th:last-child,td:last-child{border-left:0}
+tbody tr:last-child td{border-bottom:0}
+
+thead{
+  height:27px;
+  background:var(--navy);
+}
+
+th{
+  font-size:8px;
+  color:#fff;
+  white-space:nowrap;
+  font-weight:800;
+}
+
+tbody tr:nth-child(even){background:#fafbfc}
+tbody tr:nth-child(odd){background:#fff}
+
+tbody tr{
+  height:calc((100% - 27px)/6);
+}
+
+.c-name{width:31%}
+.c-qty{width:14%}
+.c-price{width:18%}
+.c-disc{width:15%}
+.c-total{width:22%}
+
+td input{
+  height:100%;
+  min-height:24px;
+  border:0;
+  border-radius:4px;
+  background:transparent;
+  font-size:9px;
+  padding:2px;
+}
+
+td input:focus{
+  background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent);
+}
+
+.name{
+  text-align:right!important;
+  padding-right:5px!important;
+  font-weight:700;
+  color:var(--navy);
+}
+
+.row-total{
+  display:block;
+  direction:ltr;
+  color:var(--accent);
+  font-size:9px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.totals{
+  padding:4px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:29px 35px;
+  gap:4px;
+}
+
+.sum{
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:3px 5px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:4px;
+  background:var(--paper-soft);
+  min-width:0;
+}
+
+.sum span{
+  font-size:7px;
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+.sum strong{
+  font-size:9px;
+  direction:ltr;
+  white-space:nowrap;
+  color:var(--ink);
+}
+
+.sum input{
+  width:55px;
+  height:22px;
+  font-size:8px;
+}
+
+.grand{
+  grid-column:span 2;
+  border-color:#aac8be;
+  background:var(--accent-soft);
+  padding:4px 7px;
+}
+
+.grand span{
+  font-size:9px;
+  color:var(--accent);
+  font-weight:900;
+}
+
+.grand strong{
+  font-size:14px;
+  color:var(--navy);
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4px;
+  padding:3px;
+  background:#fff;
+}
+
+.act{
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#fff;
+  color:var(--navy);
+  font-size:8px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.act.gold{
+  border-color:#d8c49d;
+  color:#6c4f1c;
+  background:#f8f1e4;
+}
+
+.act.green{
+  border-color:var(--accent);
+  color:#fff;
+  background:var(--accent);
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:7px;
+  transform:translate(-50%,150%);
+  width:min(calc(100% - 18px),380px);
+  padding:7px;
+  border:1px solid #afc9c0;
+  border-radius:9px;
+  background:#fff;
+  color:var(--ink);
+  box-shadow:var(--shadow);
+  text-align:center;
+  font-size:9px;
+  font-weight:800;
+  transition:.25s;
+  z-index:10;
+}
+
+.toast.show{transform:translate(-50%,0)}
+
+body.shot .edit{display:none!important}
+
+body.shot .app{
+  grid-template-rows:48px 63px minmax(0,1fr) 78px;
+}
+
+body.shot .top{justify-content:center}
+
+body.shot input,
+body.shot select{
+  pointer-events:none;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+body.shot .paidText{display:block!important}
+
+@media(max-height:700px){
+  .app{
+    padding:3px;
+    gap:3px;
+    grid-template-rows:42px 55px 27px minmax(0,1fr) 70px 31px;
+  }
+  .logo{width:30px;height:30px}
+  .top{padding:3px 5px}
+  input,select{height:21px;font-size:8px}
+  .totals{grid-template-rows:26px 30px}
+  .grand strong{font-size:12px}
+}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="box top">
+  <div class="brand"><div class="logo">M</div><div><h1>MIRRAMOR</h1><p>فاتورة مبيعات</p></div></div>
+  <div class="tools edit"><button class="tool" id="new">＋</button><button class="tool" id="save">💾</button><button class="tool" id="shot">📸</button></div>
+</header>
+
+<section class="box customer">
+  <div class="field"><label>العميل</label><input id="customer" placeholder="اسم العميل"></div>
+  <div class="field"><label>الفاتورة</label><input id="invoice" dir="ltr"></div>
+  <div class="field"><label>التاريخ</label><input id="date" type="date"></div>
+  <div class="field"><label>الدفع</label><select id="payment"><option>نقدي</option><option>إنستاباي</option><option>فودافون كاش</option><option>آجل</option></select></div>
+</section>
+
+<section class="box discount edit">
+  <span>خصم موحد %</span><input id="global" type="number" min="0" max="100" value="0"><button class="apply" id="apply">تطبيق</button><span style="text-align:left">عدّل الخلايا مباشرة</span>
+</section>
+
+<section class="box sheet">
+<table>
+<thead><tr><th class="c-name">المنتج</th><th class="c-qty">الكمية</th><th class="c-price">السعر</th><th class="c-disc">خصم %</th><th class="c-total">الإجمالي</th></tr></thead>
+<tbody id="rows"></tbody>
+</table>
+</section>
+
+<section class="box totals">
+  <div class="sum"><span>قبل الخصم</span><strong id="subtotal">0.00</strong></div>
+  <div class="sum"><span>الخصم</span><strong id="discount">0.00</strong></div>
+  <div class="sum edit"><span>الشحن</span><input id="shipping" type="number" min="0" value="0"></div>
+  <div class="sum grand"><span>الإجمالي النهائي</span><strong id="grand">0.00 ج.م</strong></div>
+  <div class="sum"><span>المدفوع</span><input class="edit" id="paid" type="number" min="0" value="0"><strong class="paidText" id="paidText" style="display:none">0.00</strong></div>
+  <div class="sum"><span>المتبقي</span><strong id="remaining">0.00</strong></div>
+</section>
+
+<section class="box actions edit">
+  <button class="act" id="clear">تصفير الكميات</button>
+  <button class="act gold" id="copy">نسخ الفاتورة</button>
+  <button class="act green" id="shot2">تجهيز للسكرين</button>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const defaults=[
+{name:"Face Serum",price:320,qty:0,discount:0},
+{name:"Facial Cleanser",price:180,qty:0,discount:0},
+{name:"Emollient",price:120,qty:0,discount:0},
+{name:"Sunscreen",price:230,qty:0,discount:0},
+{name:"Hair Serum",price:240,qty:0,discount:0},
+{name:"Massage Oil",price:50,qty:0,discount:0}
+];
+let products=defaults.map(x=>({...x}));
+const $=x=>document.getElementById(x),E={rows:$("rows"),customer:$("customer"),invoice:$("invoice"),date:$("date"),payment:$("payment"),global:$("global"),shipping:$("shipping"),paid:$("paid"),paidText:$("paidText"),subtotal:$("subtotal"),discount:$("discount"),grand:$("grand"),remaining:$("remaining"),toast:$("toast")};
+const num=v=>Number.isFinite(Number(v))?Number(v):0;
+const clamp=(v,a,b)=>Math.min(Math.max(v,a),b);
+const money=v=>num(v).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+function today(){const d=new Date(),l=new Date(d.getTime()-d.getTimezoneOffset()*60000);return l.toISOString().slice(0,10)}
+function no(){const d=new Date();return `MR-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}-${String(Date.now()).slice(-4)}`}
+function math(p){const price=Math.max(0,num(p.price)),qty=Math.max(0,Math.floor(num(p.qty))),discount=clamp(num(p.discount),0,100),gross=price*qty,d=gross*discount/100;return{price,qty,discount,gross,d,total:gross-d}}
+function toast(t){E.toast.textContent=t;E.toast.classList.add("show");clearTimeout(toast.x);toast.x=setTimeout(()=>E.toast.classList.remove("show"),1600)}
+function render(){E.rows.innerHTML="";products.forEach((p,i)=>{const m=math(p),tr=document.createElement("tr");tr.innerHTML=`<td><input class="name" data-i="${i}" data-f="name" value="${p.name}"></td><td><input type="number" min="0" data-i="${i}" data-f="qty" value="${m.qty}"></td><td><input type="number" min="0" data-i="${i}" data-f="price" value="${m.price}"></td><td><input type="number" min="0" max="100" data-i="${i}" data-f="discount" value="${m.discount}"></td><td><span class="row-total" id="rt${i}">${money(m.total)}</span></td>`;E.rows.appendChild(tr)});calc()}
+function calc(){let subtotal=0,discount=0;products.forEach(p=>{const m=math(p);subtotal+=m.gross;discount+=m.d});const shipping=Math.max(0,num(E.shipping.value)),paid=Math.max(0,num(E.paid.value)),grand=Math.max(0,subtotal-discount+shipping),remaining=Math.max(0,grand-paid);E.subtotal.textContent=money(subtotal);E.discount.textContent=money(discount);E.grand.textContent=`${money(grand)} ج.م`;E.remaining.textContent=money(remaining);E.paidText.textContent=money(paid);return{subtotal,discount,shipping,paid,grand,remaining}}
+E.rows.addEventListener("input",e=>{const x=e.target.closest("[data-f]");if(!x)return;const i=+x.dataset.i,f=x.dataset.f;if(f==="name")products[i].name=x.value;if(f==="qty")products[i].qty=Math.max(0,Math.floor(num(x.value)));if(f==="price")products[i].price=Math.max(0,num(x.value));if(f==="discount")products[i].discount=clamp(num(x.value),0,100);$("rt"+i).textContent=money(math(products[i]).total);calc()});
+$("apply").onclick=()=>{const d=clamp(num(E.global.value),0,100);products=products.map(p=>({...p,discount:d}));render();toast(`تم تطبيق خصم ${d}%`)};
+$("clear").onclick=()=>{products=products.map(p=>({...p,qty:0}));render();toast("تم تصفير الكميات")};
+$("new").onclick=()=>{products=defaults.map(x=>({...x}));E.customer.value="";E.invoice.value=no();E.date.value=today();E.payment.value="نقدي";E.global.value=0;E.shipping.value=0;E.paid.value=0;render();toast("فاتورة جديدة")};
+$("save").onclick=()=>{localStorage.setItem("mirramor_excel_v2",JSON.stringify({products,customer:E.customer.value,invoice:E.invoice.value,date:E.date.value,payment:E.payment.value,global:E.global.value,shipping:E.shipping.value,paid:E.paid.value}));toast("تم الحفظ")};
+function toggle(){document.body.classList.toggle("shot");toast(document.body.classList.contains("shot")?"جاهزة للسكرين — اضغط الشعار للخروج":"وضع التعديل")}
+$("shot").onclick=toggle;$("shot2").onclick=toggle;document.querySelector(".brand").onclick=()=>{if(document.body.classList.contains("shot"))toggle()};
+$("copy").onclick=async()=>{const t=calc(),rows=products.map(p=>{const m=math(p);return m.qty?`${p.name} | ${m.qty} × ${money(m.price)} | خصم ${m.discount}% | ${money(m.total)} ج.م`:null}).filter(Boolean),text=["MIRRAMOR",`العميل: ${E.customer.value||"غير مسجل"}`,`الفاتورة: ${E.invoice.value}`,`التاريخ: ${E.date.value}`,"----------------",...rows,"----------------",`قبل الخصم: ${money(t.subtotal)} ج.م`,`الخصم: ${money(t.discount)} ج.م`,`الشحن: ${money(t.shipping)} ج.م`,`الإجمالي: ${money(t.grand)} ج.م`,`المدفوع: ${money(t.paid)} ج.م`,`المتبقي: ${money(t.remaining)} ج.م`].join("\n");try{await navigator.clipboard.writeText(text);toast("تم نسخ الفاتورة")}catch{toast("تعذر النسخ")}};
+E.shipping.oninput=calc;E.paid.oninput=calc;
+function load(){try{const s=JSON.parse(localStorage.getItem("mirramor_excel_v2")||"null");if(!s)return;products=Array.isArray(s.products)?s.products:products;E.customer.value=s.customer||"";E.invoice.value=s.invoice||no();E.date.value=s.date||today();E.payment.value=s.payment||"نقدي";E.global.value=s.global||0;E.shipping.value=s.shipping||0;E.paid.value=s.paid||0}catch{}}
+E.invoice.value=no();E.date.value=today();load();render();
+
+// تحديد الرقم بالكامل بمجرد الضغط على أي خانة رقمية
+document.addEventListener("focusin", e => {
+  if (e.target.matches('input[type="number"]')) {
+    requestAnimationFrame(() => e.target.select());
+  }
+});
+
+document.addEventListener("pointerup", e => {
+  if (e.target.matches('input[type="number"]')) {
+    e.preventDefault();
+    e.target.focus();
+    e.target.select();
+  }
+});
+
+</script>
+</body></html>
